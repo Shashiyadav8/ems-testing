@@ -6,8 +6,9 @@ const normalizeIP = (ip = '') =>
 module.exports = async (req, res, next) => {
   try {
     // 1. Extract and normalize client IP
-    let rawIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
-    const clientIP = normalizeIP(rawIP);
+    const rawHeader = req.headers['x-forwarded-for'] || '';
+const rawIP = rawHeader.split(',')[0].trim() || req.socket.remoteAddress;
+const clientIP = normalizeIP(rawIP);
 
     console.log(`🔍 Client IP: [${clientIP}]`);
 
